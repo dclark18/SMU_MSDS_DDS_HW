@@ -1,0 +1,108 @@
+---
+title: "Unit3HW3_DanielClark"
+author: "Daniel Clark"
+date: "5/27/2019"
+output: html_document
+---
+
+### Data Summary (20 points): From this aforementioned cloned repo, please extract titanic.csv.zip.  To be clear, this does not have to be done in Git or command line.   
+
+###In R, please read in titanic.csv via either read.table() or read.csv(), assigning it to df.  This dataset follows the passengers aboard the Titanic, including their fees paid, rooms rented, and survivorship status. 
+
+```{r titanic}
+titanic <- read.csv(file= "~/Desktop/SMU/DoingDataScience/Unit3/awesome-public-datasets/Datasets/titanic.csv", header=TRUE, sep=",")
+```
+
+###Output the respective count of females and males aboard the Titanic. Plot the frequency of females and males.  Be sure to give an accurate title and label the axes. 
+
+```{r sex}
+summary(titanic$Sex)
+```
+
+```{r freq plot}
+counts <- table(titanic$Sex)
+barplot(counts, main = "Sex Count", xlab = "Sex")
+```
+
+### Please use one apply function (to review: swirl() modules 11, 12) to output the means of Age, Fare, and Survival.  Make sure the output is a real number for all three means. 
+
+```{r apply}
+names(titanic)
+lapply(titanic, mean)
+```
+
+###Function Building (30 points): You research sleep and just got your first data set.  Later, you’ll have another dataset with the same column names, so you want to create a helper function that you can analyze this dataset and the next.  Load sleep_data_01.csv (found at http://talklab.psy.gla.ac.uk/L1_labs/lab_1/homework/index.html).  Questions 3A through 3D should be answered in function(x){}.  3E can be outside of the function.  
+
+```{r sleep}
+sleep <- read.csv(file= "~/Desktop/SMU/DoingDataScience/Unit3/awesome-public-datasets/Datasets/sleep_data_01.csv", header=TRUE, sep=",")
+head(sleep)
+```
+
+### Create objects for the median Age, the minimum and maximum Duration of sleep, and the mean and standard deviation of the Rosenberg Self Esteem scale (RSES).  You may need to specify a few options like in Problem 2 and live session. 
+
+```{r sleepobs}
+names(sleep)
+
+sleep_desc <- function(x) {
+sleep[is.na(sleep)] <- 0
+Agemed <- apply(sleep[2], 2, median)
+duramin <- apply(sleep[15], 2, min)
+duramax <- apply(sleep[15], 2, max)
+sdrses <- apply(sleep[12], 2, sd)
+meanrses <- apply(sleep[12], 2, mean)
+report <- cbind(Agemed/5, sdrses/5, meanrses/5, duramax-duramin)
+names(report)[1]<-paste('MedianAge')
+names(report)[2]<-paste('SelfEsteem')
+names(report)[3]<-paste('SE_SD')
+names(report)[4]<-paste('DurationRange')
+}
+```
+
+### FiveThirtyEight Data (30 points): Navigate on GitHub to https://github.com/rudeboybert/fivethirtyeight and read README.md. It will include everything you need.  
+
+### Install the fivethirtyeight package. 
+
+```{r install, include=FALSE}
+install.packages("fivethirtyeight")
+install.packages("remotes")
+remotes::install_github("rudeboybert/fivethirtyeight", build_vignettes = TRUE)
+
+```
+
+### In the listing of Data sets in package ‘fivethirtyeight,’ assign the 22nd data set to an object ‘df.’ 
+
+```{r college_grad}
+data(package = "fivethirtyeight")
+df <- college_grad_students
+#  The Economic Guide To Picking A College Major
+dim(df)
+names(df)
+```
+
+###Data Summary (30 points): Use your newly assigned data frame from question 4 for this question.  
+
+##Write an R command that gives you the column names of the data frame.  Right after that, write one that counts the number of columns but not rows.  Hint: The number should match one of your numbers in Question 1d for dimensions. 
+
+```{r colnames}
+names(df)
+ncol(df)
+```
+
+### Generate a count of each unique major_category in the data frame.  I recommend using libraries to help.  To be clear, this should look like a matrix or data frame containing the major_category and the frequency it occurs in the dataset.  Assign it to major_count. 
+
+```{r majorcount}
+major_count <- table(df$major_category)
+```
+
+###To make things easier to read, put par(las=2) before your plot to make the text perpendicular to the axis.  Make a barplot of major_count.  Make sure to label the title with something informative (check the vignette if you need), label the x and y axis, and make it any color other than grey.  Assign the major_category labels to their respective bar.  Flip the barplot horizontally so that bars extend to the right, not upward.  All of these options can be done in a single pass of barplot(). Note: It’s okay if it’s wider than the preview pane. 
+```{r barplot}
+par(las=2)
+barplot(major_count, main = "major count", xlab = "major", ylab = "count", horiz = TRUE)
+```
+
+### Write the fivethirtyeight data to a csv file.  Make sure that it does not have row labels. 
+
+```{r write csv}
+write.csv(major_count, '~/Desktop/SMU/DoingDataScience/Unit3/awesome-public-datasets/Datasets/major_count.csv')
+```
+
