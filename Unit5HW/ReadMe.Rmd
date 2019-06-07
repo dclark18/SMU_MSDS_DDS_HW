@@ -1,0 +1,19 @@
+---
+title: "Readme"
+author: "Daniel Clark"
+date: "6/7/2019"
+output: html_document
+---
+
+## Readme file for Unit 5 HW for Daniel Clark Code Book
+
+# codebook contains 4 files
+
+# file 1 is a markdown for the HW where it includes the code I used to merge and sort and tidy two datasets on baby names and their counts in 2015 and 2016. 
+
+# One of the output CSV files is the resulting y2015 dataset with a correction to one of the baby names that was misspelled
+
+# the other CSV file was for the merged datasets for 2016 and 2015 baby names and filtered by Female only names and sorted by most popular.
+
+# finally there is an HTML file that is included
+
